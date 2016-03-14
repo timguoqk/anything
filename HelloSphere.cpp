@@ -159,7 +159,7 @@ void calcSafeForce(int t, HDdouble force[3]);
 
 //display current state (by Yokoi)
 void viewState(HapticDisplayState *pState, int para[3]);
-
+void printError(double error, int num);
 int mod(int a, int b);
 double generateGaussianNoise(double NoiseVar);
 
@@ -1139,11 +1139,23 @@ void drawCursor(HapticDisplayState *pState, int Monitor)
 		}
 
 		std::string str = s.str();
+		double err = floor(100 * Error0) / 100;
+		printError(err, trial);
 		drawPrompts(str.c_str(), stringPos);
+		
 	}
 
 }
+//prints error to file! 
+void printError(double err, int num) {
+	FILE *fpExp;
+	char fname[256] = "Error.csv";
+	fpExp = fopen(fname, "a");
+	fprintf(fpExp, "%s,%d \n", err, num);
+	fclose(fpExp);
 
+
+}
 //**************************
 // É^Å[ÉQÉbÉgï`âÊ
 //**************************
