@@ -83,7 +83,12 @@ typedef struct
 	int button_;
 	int ConnectionType; // 0: no connection,
 
+
 } HapticDisplayState;
+
+int backHome; //center force 
+int backTarget; //force drawing back to target 
+
 
 typedef struct {
 	bool   endTrial_;
@@ -420,6 +425,10 @@ void initPhantom()
 	if (1) {
 		cout << "Please enter the number of Phantoms" << endl;
 		cin >> nPhantom; printf("nPhantom = %d\n", nPhantom);
+		cout << "Please enter 1 for center force and 0 otherwise" << endl;
+		cin >> backHome; 
+		cout << "Please enter 1 for target force and 0 otherwise" << endl;
+		cin >> backTarget; 
 	}
 	else {
 		nPhantom = 1;
@@ -1140,22 +1149,14 @@ void drawCursor(HapticDisplayState *pState, int Monitor)
 
 		std::string str = s.str();
 		double err = floor(100 * Error0) / 100;
-		printError(err, trial);
+
 		drawPrompts(str.c_str(), stringPos);
 		
 	}
 
 }
 //prints error to file! 
-void printError(double err, int num) {
-	FILE *fpExp;
-	char fname[256] = "Error.csv";
-	fpExp = fopen(fname, "a");
-	fprintf(fpExp, "%s,%d \n", err, num);
-	fclose(fpExp);
 
-
-}
 //**************************
 // ターゲット描画
 //**************************
@@ -1180,7 +1181,7 @@ void drawTarget(HapticDisplayState *pState, int Monitor)
 	double targetCol[3] = { 0.5,0.5,0.5 };
 
 	// Target color
-	getColor(3, targetCol);//灰色
+	getColor(4, targetCol);//RED
 
 						   //display上でのターゲットの半径
 	double dTargetRadius = (phantom[n]->targetRadius)*(phantom[n]->p2dScale);
@@ -1555,7 +1556,7 @@ void HLCALLBACK computeForceCB0(HDdouble force[3], HLcache *cache, void *userdat
 				endTrial = true;
 			}
 		}
-		// 更新
+		// Update
 		oldTime = curTime;
 		sample++;
 	}
@@ -1769,6 +1770,7 @@ void HLCALLBACK computeForceCB3(HDdouble force[3], HLcache *cache, void *userdat
 //******************************************
 void calcEffectForce(int index, HDdouble _force[3], bool PlanarLock)
 {
+
 	//-------------------------------------------------
 	// phantom[n]の現在の状態を取得
 	int n;
@@ -1827,7 +1829,16 @@ void calcEffectForce(int index, HDdouble _force[3], bool PlanarLock)
 
 	// Connection force
 	if (TrialState == 1 || TrialState == 2) {
-
+		if (nPhantom == 1) {
+			HDdouble pConstraintForce[3] = { 0,0,0 };
+			if (backHome==1) {
+				phantom[n]->calcBackHomeForce(trial, phantom[n]->dPos, phantom[n]->dVel, pConstraintForce, curTime, plateauTime, 500);
+			}
+			else if (backTarget==1) {
+				phantom[n]->calcBackTargetForce(trial, phantom[n]->dPos, phantom[n]->dVel, pConstraintForce, curTime, plateauTime, 700, TrackingTarget, phantom[n]);
+			} 
+			add(force, pConstraintForce, force);
+		}
 		HDdouble dConnectionForce[3] = { 0,0,0 }, pConnectionForce[3] = { 0,0,0 };
 
 		// Connection 5: connect all nPhantoms
@@ -1842,6 +1853,7 @@ void calcEffectForce(int index, HDdouble _force[3], bool PlanarLock)
 					PhantomID[i] = PhantomID[i + 1];
 				}
 			}
+
 			// sum all forces from other phantoms
 			for (int i = 0; i<nPhantom - 1; i++) {
 				dConnectionForce[0] += phantom[n]->kConnection*(phantom[PhantomID[i]]->dPos[0] - phantom[n]->dPos[0]);
@@ -1862,6 +1874,7 @@ void calcEffectForce(int index, HDdouble _force[3], bool PlanarLock)
 					PhantomID2[0] = n; PhantomID2[1] = n; PhantomID2[2] = n;
 				}
 			}
+
 			// Connection 2: phantoms 0,1,3
 			if (phantom[n]->ConnectionType[trial] == 2) {
 				PhantomID2[0] = 0; PhantomID2[1] = 1; PhantomID2[2] = 3;

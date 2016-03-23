@@ -173,7 +173,7 @@ void Phantom::setPhantomConfiguration(char* view)
 }
 
 //-------------------------
-// 実験条件読み込み
+// Read the experimental conditionz  
 void Phantom::loadExpSequence(char *_fname)
 {
 	FILE *fpExp;
@@ -259,7 +259,7 @@ void Phantom::loadExpSequence(char *_fname)
 }
 
 //-------------------------
-// dataの初期化
+// Initialization of the data 
 void Phantom::initData(int _fs, int _recordTime, int _maxSample, int _numData)
 {
 	fs = _fs;
@@ -268,13 +268,13 @@ void Phantom::initData(int _fs, int _recordTime, int _maxSample, int _numData)
 	numData = _numData;
 
 	//*** data ***
-	//二次元配列の大きさを確保
+	//Ensure the size of the two-dimensional array
 	data = new double*[maxSample];
 	for (int i = 0; i<maxSample; i++) {
 		data[i] = new double[numData];
 	}
-	//0で初期化
-	for (int i = 0; i<maxSample; i++) {	// DDD:vc8対応（iにintを追加）
+	//Initialized with 0
+	for (int i = 0; i<maxSample; i++) {	// DDD:vc8 add into to the corresponding i）
 		for (int j = 0; j<numData; j++) {
 			data[i][j] = 0.0;
 			//printf("data[%d][%d] = %f\n", i,j,data[i][j]);
@@ -283,13 +283,13 @@ void Phantom::initData(int _fs, int _recordTime, int _maxSample, int _numData)
 
 	//*** time ***
 	time = new int[maxSample];
-	for (int i = 0; i<maxSample; i++) {	// DDD:vc8対応（iにintを追加）
+	for (int i = 0; i<maxSample; i++) {	// DDD:vc8 add int to the corresponding i）
 		time[i] = 0.0;
 	}
 }
 
 //-------------------------
-// dataの消去
+// delete Data 
 void Phantom::deleteData()
 {
 	int i;
@@ -324,7 +324,7 @@ void Phantom::deleteData()
 }
 
 //-------------------------
-// dataのセット
+// Set of data 
 void Phantom::setData(int sample, int curTime, double instRate, double TrackingTarget[2])
 {
 	time[sample] = curTime;
@@ -358,7 +358,7 @@ void Phantom::setData(int sample, int curTime, double instRate, double TrackingT
 }
 
 //-------------------------
-// dataの保存
+// data storage 
 void Phantom::saveData(int trial, char* fname)
 {
 	char filename[500];
@@ -379,11 +379,11 @@ void Phantom::saveData(int trial, char* fname)
 	// 書き込み実行
 	//トライアル毎の変数
 	// DDD:エラークランプ係数追加
-	fprintf(fp, "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n", "trial", "coCond Force(0) Move(1)",
+	fprintf(fp, "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s \n", "trial", "coCond Force(0) Move(1)",
 		"ffCond0 [N/(mm/s)]", "ffCond1 [N/(mm/s)]", "ffCond2 [N/(mm/s)]", "ffCond3 [N/(mm/s)]",
 		"ffCond4 [N/(mm/s)]", "ffCond5 [N/(mm/s)]", "ffCond6 [N/(mm/s)]", "ffCond7 [N/(mm/s)]",
 		"vmCond [deg]", "targetAngle[deg]", "targetDistance[mm]", "targetForce[N]", "targetColor", "errorCramp");
-	fprintf(fp, "%d,%d,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%d,%lf\n", trial, coCond[trial],
+	fprintf(fp, "%d,%d,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%d,%lf \n", trial, coCond[trial],
 		ffCond[trial][0], ffCond[trial][1], ffCond[trial][2], ffCond[trial][3],
 		ffCond[trial][4], ffCond[trial][5], ffCond[trial][6], ffCond[trial][7],
 		vmCond[trial], targetAngle[trial], targetDistance[trial], targetForce[trial], targetColor[trial],
@@ -396,18 +396,18 @@ void Phantom::saveData(int trial, char* fname)
 	fprintf(fp, "%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf\n", targetRadius, cursorRadius, pOffset[0], pOffset[1], pOffset[2], dOffset[0], dOffset[1], dOffset[2]);
 	fprintf(fp, "%s,%s,%s\n", "p2dScale", "p2dScaleForForce", "p2dMatrix");
 	fprintf(fp, "%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf,%lf\n", p2dScale, p2dScaleForForce, p2dMatrix[0], p2dMatrix[1], p2dMatrix[2], p2dMatrix[3], p2dMatrix[4], p2dMatrix[5], p2dMatrix[6], p2dMatrix[7], p2dMatrix[8]);
-	//空白３行
+	//3 blank lines
 	fprintf(fp, " , , ,\n");
 	fprintf(fp, " , , ,\n");
 	fprintf(fp, " , , ,\n");
-	//実験データ
+	//Experimental Data
 	fprintf(fp, "%s,%s,%s,%s,%s,", "time[ms]", "instRate[Hz]", "posX[mm]", "posY[mm]", "posZ[mm]");
 	fprintf(fp, "%s,%s,%s,", "velX[mm]", "velY[mm]", "velZ[mm]");
 	fprintf(fp, "%s,%s,%s,", "forceX[N]", "forceY[N]", "forceZ[N]");
 	//fprintf(fp, "%s,%s,%s,%s,%s,%s,%s,%s,%s," , "r11","r21","r31","r12","r22","r32","r13","r23","r33");
 	fprintf(fp, "%s,%s\n", "TargetX", "TargetY");
 
-	//時系列データ保存
+	//Save time series data
 	for (int i = 0; i<maxSample; i++) {
 		fprintf(fp, "%d,", time[i]);
 		for (int j = 0; j<numData; j++) {
@@ -422,7 +422,7 @@ void Phantom::saveData(int trial, char* fname)
 
 //***********************************
 //
-// 力の計算
+// Calculation of the force
 //
 //***********************************
 //-------------------------
@@ -560,6 +560,65 @@ void Phantom::calcBackHomeForce(const int trial,
 	f[0] += pConstraintForce[0];
 	f[1] += pConstraintForce[1];
 	f[2] += pConstraintForce[2];
+}
+
+void Phantom::calcBackTargetForce(const int trial, const double dPos[3], const double dVel[3], double f[3], int curTime, int plateauTime, int cumulativeTimeForBackHome, double dTargetPos[2], Phantom * p)
+{
+	if (p->bt_counter != 0) {
+		f[0] += p->bt_force[0];
+		f[1] += p->bt_force[1];
+		f[2] += p->bt_force[2];
+		bt_counter -= 1;
+		return;
+	}
+	bt_counter = 40;
+	f[0] = 0.0; f[1] = 0.0; f[2] = 0.0;
+	//プラトーに達する前は、粘性を少し多めに。
+	double largeKb = 2 * kb;//max3倍まで
+							//****************************
+							// 二次元平面内での原点拘束を用いてbackHomeする
+							//****************************
+	HDdouble dConstraintForce[3] = { 0,0,0 };
+	// stiffness
+	if (dPos[0]>0) dConstraintForce[0] += -0.5*std::log(1 + abs(dPos[0] - dTargetPos[0]));
+	else           dConstraintForce[0] += +0.5*std::log(1 + abs(dPos[0] - dTargetPos[0]));
+	if (dPos[1]>0) dConstraintForce[1] += -0.5*std::log(1 + abs(dPos[1] - dTargetPos[1]));
+	else           dConstraintForce[1] += +0.5*std::log(1 + abs(dPos[1] - dTargetPos[1]));
+	/*if (dPos[0]>0) dConstraintForce[0] = -abs(dPos[0] - dTargetPos[0]);
+	else           dConstraintForce[0] = abs(dPos[0] - dTargetPos[0]);
+	if (dPos[1]>0) dConstraintForce[1] = -abs(dPos[1] - dTargetPos[1]);
+	else           dConstraintForce[1] = abs(dPos[1] - dTargetPos[1]);*/
+
+	//dConstraintForce[0] /= 10;
+	//dConstraintForce[1] /= 10;
+
+	// Damping
+	double kbBackHome = (60 / 1000);//    <------------------
+	dConstraintForce[0] += -kbBackHome * dVel[0];
+	dConstraintForce[1] += -kbBackHome * dVel[1];
+	dConstraintForce[2] += - (60/1000) * dVel[2];
+
+	//力を徐々に大きくする
+	int pTime = 1000;//                 <------------------
+	double rate;
+	rate = (double)cumulativeTimeForBackHome / (double)pTime;
+	//if (cumulativeTimeForBackHome < pTime) {
+		scale(rate, dConstraintForce, dConstraintForce);
+	//}
+
+	// ファントム座標系に変換
+	HDdouble pConstraintForce[3] = { 0,0,0 };
+	mul(d2pMatrix, dConstraintForce, pConstraintForce);
+
+	p->bt_force[0] = pConstraintForce[0];
+	p->bt_force[1] = pConstraintForce[1];
+	p->bt_force[2] = pConstraintForce[2];
+
+	//ファントム座標系で力をセット
+	f[0] += pConstraintForce[0];
+	f[1] += pConstraintForce[1];
+	f[2] += pConstraintForce[2];
+	printf("force: (%f, %f, %f)\n", pConstraintForce[0], pConstraintForce[1], pConstraintForce[2]);
 }
 
 //-------------------------------------------

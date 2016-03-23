@@ -73,6 +73,7 @@ public:
 	// 各種計算
 	void calcConstraintForce(const int trial, const double dPos[3], const double dVel[3], double f[3], int curTime, int plateauTime);
 	void calcBackHomeForce(const int trial, const double dPos[3], const double dVel[3], double f[3], int curTime, int plateauTime, int cumulativeTimeForBackHome);//Hirashima 2009/08/04
+	void calcBackTargetForce(const int trial, const double dPos[3], const double dVel[3], double f[3], int curTime, int plateauTime, int cumulativeTimeForBackHome, double dTargetPos[2], Phantom *p);//Hirashima 2009/08/04
 	void calcDPos(double pPos[3], double dPos[3]);
 	void calcDVel(double pVel[3], double dVel[3]);
 	void getForceFieldMatrix(int trial, double R[18]);
@@ -188,6 +189,10 @@ public:
 	int numData;
 	double** data;//二次元配列　data[maxSample][numData]
 	int* time;//[ms]
+
+	// For backTarget
+	int bt_counter = 0;
+	double bt_force[3];
 };
 
 #endif // !defined(AFX_PHANTOM_H__6C83584A_FBD2_42D8_98D9_2688ABE35BEA__INCLUDED_)
