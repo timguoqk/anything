@@ -1667,11 +1667,15 @@ const gerund = t => { const [w, ...rest] = t.split(' '); const v = VERB_ING[w.to
 const sentence = s => { const t = String(s).trim().replace(/\s+/g, ' ').replace(/[.!?]+$/, ''); const c = t.length > 72 ? t.slice(0, 70).replace(/\s+\S*$/, '') + '…' : t; return c ? c[0].toUpperCase() + c.slice(1) : 'New task'; };
 const titleCase = s => { const w = String(s).replace(/[^\p{L}\p{N}\s'#&-]/gu, '').trim().split(/\s+/).filter(Boolean).slice(0, 6); if (!w.length) return 'New task'; w[0] = w[0][0].toUpperCase() + w[0].slice(1); return w.join(' '); };
 async function dtSay(texts, opts = {}) {
+  const list = D.msgs;
   for (const t of [].concat(texts)) {
-    D.msgs.push({ t: 'typing' }); dtMsgs();
-    await sleep(Math.min(1500, 500 + t.length * 9));
-    D.msgs.pop();
-    D.msgs.push(typeof t === 'string' ? { t: 'dot', text: t } : t);
+    if (D.msgs !== list) return;
+    const ty = { t: 'typing' };
+    list.push(ty); dtMsgs();
+    await sleep(Math.min(1500, 500 + (typeof t === 'string' ? t.length : 40) * 9));
+    const k = list.indexOf(ty); if (k > -1) list.splice(k, 1);
+    if (D.msgs !== list) return;
+    list.push(typeof t === 'string' ? { t: 'dot', text: t } : t);
     dtMsgs();
   }
 }
@@ -2270,9 +2274,10 @@ function gbRender() {
 /* ═════════ xAI Grok Bot — behaviour ═════════ */
 async function gbSay(b, items) {
   for (const it of [].concat(items)) {
-    b.msgs.push({ t: 'typing' }); if (b.id === G.open) gbMsgs();
+    const ty = { t: 'typing' };
+    b.msgs.push(ty); if (b.id === G.open) gbMsgs();
     await sleep(Math.min(1400, 450 + (typeof it === 'string' ? it.length * 8 : 300)));
-    b.msgs.pop();
+    const k = b.msgs.indexOf(ty); if (k > -1) b.msgs.splice(k, 1);
     b.msgs.push(typeof it === 'string' ? { t: 'bot', text: it } : it);
     b.time = clock();
     if (b.id === G.open) gbMsgs(); else b.unread = true;
