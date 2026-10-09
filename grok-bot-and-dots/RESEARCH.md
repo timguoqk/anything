@@ -33,15 +33,21 @@ The rebuild only uses sample content: names, messages and numbers are made up an
 | Sidebar (~300px, `#F4F4F4`) | Traffic lights and a "+" menu (New Bot / New Channel). Search field (`#E6E6E6`). Pinned Bots as large avatars with a gray label pill. Sections (e.g. Work, Ops, Unassigned) of rows: avatar, bold name, time, one-line preview. "Hidden Bots" with a count. Floating blue "More unreads" pill. Plugins. Account row with a menu (Get Grok Bot for iOS, Settings, About, Help Center, Send Feedback, Log out). | Grok Bot 101, Designing Grok Bot, multi-team guide |
 | Row context menu | Pin; Move to (sections, New section); Mark as Unread; Edit Profile; Duplicate; Copy conversation ID | multi-team guide |
 | Thread (`#FCFCFC`) | Header with the avatar and name. Bot bubbles are gray (`#E9E9E9`); your bubbles are black with white text. Also in the thread: centered timestamps, inline screenshots of the Bot's browser, A/B/C choice prompts that collapse to the picked answer with a check, task cards ("Running", "Open in Cursor"), draft approvals ("Send email" / "Discard"), plugin cards ("Authorize", "Added"), and system lines ("Renamed to…", "Created routine"). | 101 guide, support guide, App Store |
-| Composer | Rounded field with a ⊕ button, placeholder "Message {Bot}" ("Ask {Bot}" on iPhone), and a black round mic button | 101 guide, App Store |
+| Composer | Rounded field with a ⊕ button and the placeholder "Message {Bot}" ("Ask {Bot}" on iPhone). When empty it shows a black round mic button; while you type, a gray mic and a black send arrow. | 101 guide, App Store, Alarcon |
+| Status | Avatar dots: green while working, orange when the Bot needs you, blue for unread. A blue "NEW" divider marks unread messages. Rows show "Typing…" while the Bot replies. | screen recordings, eesel |
+| Questions and approvals | A/B/C options with subtitles plus a free-text box and Submit. Action prompts offer Allow once / Always allow / Deny and expire after about 10 minutes. Folded Bot-to-Bot lines ("2 messages with 2 Bots") open in place. | multi-team recording, Alarcon |
+| New Bot | Large avatar preview, 10 color swatches, 8 shapes, Name, Get started, and a Suggestions row (Feedback Miner, Night Shift, Inbox Triage…). The empty sidebar reads "Create your first Bot" / "No chats yet". | mem0 |
+| App Settings | General (account with Sign Out; Appearance › Theme "Follow System"; Agent › Timezone, Execution on Local Computer, Auto-review, Auto-review Rules "When Grok Bot wants to:"), Usage & Billing, Updates | RuntimeWire (Windows) |
 | Right panel (~316px, `#F9F9F9`) | Gear and ">>". "{Bot}'s screen" as a live thumbnail, or a monitor placeholder when idle. "Routines" with + (green clock icon, name, schedule). | 101 guide |
 | Routine editor | Active toggle, Delete, Test run. Name, Instruction, "When to run" (+ Add another), and Run history with checks. | 101 guide |
 | Settings | Avatar; Name; Label (optional); Description; Notifications ("Get notified when this Bot finishes / needs input"); Share as template | 101 guide, Designing guide |
 | Profile popover | Large avatar on a gray card, description, Context (Instructions and memories), Integrations, "Team only" sharing, Copy link / Publish | Designing guide, templates guide |
-| Cloud computer | Full-window dark overlay showing the Bot's Linux desktop (Chrome, dock with browser, tools and terminal). "Teach a task" and an exit button. | 101 guide |
+| Cloud computer | Full-window dark overlay showing the Bot's Linux desktop (Chrome, dock with browser, tools and terminal). "Teach a task" and an exit button. While recording, a bar reads "{Bot} is watching and learning" with a red dot, timer and close button; recordings stop at 10 minutes, and the Bot turns the demo into a skill. | 101 guide, archived x.ai/bot demo, mem0 |
 | Plugins | Marketplace / Yours tabs, search, Featured (Gmail, Google Calendar, Google Drive, Granola…), categories, Added or Add | support guide |
 | Channels | "# name" threads with several Bots, sender names over bubbles, and a Members panel with Add Member | multi-team guide |
 | iPhone | Home: your avatar, search, + ; pinned Bots; list. Chat header: back, avatar-and-name pill, computer button. Approval cards. Computer view on black. | App Store |
+
+**Theme tokens.** These come from the macOS app's own design tokens, read as data from the installer. Light: sidebar `#F7F7F7`, panels `#FCFCFC`, Bot bubble `#EEEEEE`, your bubble `#070707`, accent `#1084FE`, type scale 11–26px. Dark: chat `#070707`, sidebar `#111111`, cards `#181818`, Bot bubble `#262626`, your bubble `#5A5A5A`. The app's own fonts (XVF and XVF Mono) fall back to the system font, and so does the rebuild.
 
 **Avatars.** Flat solid shapes (circle, drop, cloud, squircle, rounded triangle, pill, hexagon, arch) with two white rounded "eyes", sometimes tilted or flat dashes. The palette is bright: orange `#FF9500`, pink `#FF3399`, blue `#1A82FF`, red `#FF2A3D`, gray `#B8B8B8`, green `#00C96B`, purple, teal and brown. Marketing shots put the Mac window on a coral gradient (`#FF8F92` → `#F4606C`).
 
@@ -62,8 +68,26 @@ The rebuild only uses sample content: names, messages and numbers are made up an
 | [Docs: overview](https://docs.x.ai/grok-bot/overview), [get started](https://docs.x.ai/grok-bot/get-started), [FAQ](https://docs.x.ai/grok-bot/faq) | Product facts: shared computer, memory, platforms |
 | [Cursor Help: plans](https://cursor.com/help/grok-bot/plans) | Plan matrix |
 | [Marketplace](https://x.ai/bot/marketplace) | Shared Bots by category |
-| [Christopher Alarcon: How to use Grok](https://christopheralarcon.com/blog/how-to-use-grok) | A real account walkthrough |
+| [Christopher Alarcon: How to use Grok](https://christopheralarcon.com/blog/how-to-use-grok) | A real account in dark mode: folded sections with counts, "Marketplace" in the sidebar, Bot-to-Bot message lines, the voice dictation pill |
+| [mem0: Grok Bot guide](https://mem0.ai/library/llms-and-models/grok-bot-guide) | The New Bot screen, first-run setup, the computer view, the in-app paywall |
+| [RuntimeWire](https://runtimewire.com/article/grok-bot-s-hidden-elon-only-settings-picker-lists-33-models) | The Settings window on Windows. The same article reports a hidden model picker in one build; xAI hasn't confirmed it and the rebuild leaves it out. |
+| [eesel: Grok Bot review](https://www.eesel.ai/blog/grok-bot-review) | The x.ai/bot hero mock ("EARLY BETA", "Thinking" dots, "Typing…" preview) |
+| [Windows Mode](https://www.windowsmode.com/grok-bot-for-windows/) | The Windows build |
 | [Unite.AI](https://www.unite.ai/xai-launches-grok-bot-always-on-ai-teammates-with-their-own-cloud-computers/), [Reworked](https://www.reworked.co/collaboration-productivity/xai-launches-grok-bot-ai-agents-in-beta/), [Digital Applied](https://www.digitalapplied.com/blog/grok-bot-ai-teammates-launch-cloud-computer-2026) | Launch coverage |
+
+---
+
+### Where sources disagree
+
+- **Platforms.** The launch post says desktop and iOS, with a macOS-only download. The docs now list macOS, Windows, Linux, iOS and Android.
+- **Plans.**
+  - The launch post lists SuperGrok, Plus and Heavy, plus Cursor Pro, Pro+, Ultra and Teams.
+  - An archived pricing page from Aug 18 lists only Cursor Ultra ($200), SuperGrok Heavy ($300) and Premium Teams ($120 per seat).
+  - The in-app paywall asks for SuperGrok Heavy or SuperGrok Plus.
+  - Cursor's plans page adds X Premium+ linking.
+- **Computer.** The launch post says Bots share one computer, and so does the FAQ. Some coverage says each Bot gets its own.
+- **Naming.** The sidebar's "Plugins" (August) became "Marketplace" (September onward). The Settings field "Title" became "Label (optional)".
+- **Bubble color.** One Aug 27 recording shows a pink Bot's bubbles tinted pink. Every other capture shows neutral gray.
 
 ---
 
@@ -143,10 +167,10 @@ The rebuild only uses sample content: names, messages and numbers are made up an
 ## 3. Confirmed vs inferred in the rebuild
 
 - **Confirmed by screenshots:**
-  - Grok Bot: every surface in its table above, except the recorded-steps list and the "learned" dialog after Teach a task.
+  - Grok Bot: every surface in its table above, except the recorded-steps list and the dialog for saving a demo as a skill after Teach a task.
   - Dots: the thread, side card, computer tab, Customize modal, onboarding screens, calls and phone layout.
 - **Inferred:**
-  - Grok Bot: the recorded-steps list and "learned" dialog after Teach a task.
+  - Grok Bot: the recorded-steps list and the dialog for saving a demo as a skill after Teach a task.
   - Dots:
     - The desktop layout of the Custom rules settings. The wording is OpenAI's; the screens shown were mobile.
     - Approval cards in the thread. The docs describe approvals but no screenshot shows the card.
